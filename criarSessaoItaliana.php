@@ -37,10 +37,17 @@ VALUES($id_grupo, '".$UUID."', '".$criador."',
 '".$jogador1."', '".$jogador2."', '".$jogador3."', 
 '".$jogador4."', '".$jogador5."')";
 
-$Create_Timeout_Event= "CREATE EVENT timeout_sessao
+$Create_Timeout_Event= "CREATE EVENT `".$UUID."`
 ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 10 SECOND
 DO
-UPDATE sessao SET flg_ativa = 0 WHERE UUID = '".$UUID."' ";
+UPDATE sessao, jogador 
+SET sessao.flg_ativa = 0, jogador.flg_ingame=0 
+WHERE sessao.UUID = '".$UUID."' 
+AND (jogador.username='".$jogador1."' 
+	OR jogador.username='".$jogador2."'
+	OR jogador.username='".$jogador3."'
+	OR jogador.username='".$jogador4."'
+	OR jogador.username='".$jogador5."') ";
 
 $Update_Player_Status = "UPDATE jogador SET flg_ingame=1 
 WHERE username IN 
@@ -62,10 +69,7 @@ mysqli_query($con,$Create_Timeout_Event);
 }
 //Handler para falhas
 else
-{
-	echo mysqli_error($con);
-	echo($Create_Session);
-	
+{	
 	$result["sucesso"]="0";
 	$result["mensagem"]="Ocorreu um erro!";
 
