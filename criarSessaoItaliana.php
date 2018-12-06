@@ -38,7 +38,7 @@ VALUES($id_grupo, '".$UUID."', '".$criador."',
 '".$jogador4."', '".$jogador5."')";
 
 $Create_Timeout_Event= "CREATE EVENT `".$UUID."`
-ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 10 SECOND
+ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 1 MINUTE
 DO
 UPDATE sessao, jogador 
 SET sessao.flg_ativa = 0, jogador.flg_ingame=0 
